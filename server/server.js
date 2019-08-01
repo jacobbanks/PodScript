@@ -1,12 +1,14 @@
 const path = require('path');
 const bodyParser = require('body-parser');
 const rssParser = require('rss-parser');
-const express = require('../node_modules/express');
+const express = require('express');
 const app = express();
 
-// require routers
-const RSS = require('./routes/rss.js')
+app.use(bodyParser());
 
+
+// require routers
+const RSS = require('./routes/rss.js');
 
 // statically serve everything in the build folder on the route '/build'
 app.use('/build', express.static(path.join(__dirname, '../build')));
