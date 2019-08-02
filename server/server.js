@@ -9,6 +9,7 @@ app.use(bodyParser());
 
 // require routers
 const RSS = require('./routes/rss.js');
+const Transcript = require('./routes/transcript');
 
 // statically serve everything in the build folder on the route '/build'
 app.use('/build', express.static(path.join(__dirname, '../build')));
@@ -20,5 +21,6 @@ app.get('/', (req, res) => {
 
 // define route handlers
 app.use('/rss', RSS);
+app.use('/transcript', Transcript);
 
 app.listen(3000); //listens on port 3000 -> http://localhost:3000/

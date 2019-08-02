@@ -1,3 +1,5 @@
+/* eslint-disable no-inner-declarations */
+/* eslint-disable no-else-return */
 /* eslint-disable func-names */
 /* eslint-disable prefer-arrow-callback */
 /* eslint-disable no-unused-expressions */
@@ -5,9 +7,10 @@
 // const fs = require('fs');
 const path = require('path');
 const Parser = require('rss-parser');
+const request = require('request');
+const fs = require('fs');
 
 const parser = new Parser();
-
 
 const fileController = {};
 
@@ -20,46 +23,73 @@ fileController.rssParse = (req, res, next) => {
   })();
 };
 
-async function main() {
-// Google Cloud API functionality
-// Imports the Google Cloud client library
-  const speech = require('@google-cloud/speech');
+fileController.readFile = (req, res, next) => {
+  console.log('your in readfile')
+  const transcript = fs.readFileSync('/Users/jacobbanks/Desktop/PodScript_MP3/prodpodcasttranscription.txt', 'utf8');
+  res.locals.transcript = transcript;
+  return next();
+};
 
-  // Creates a client
-  const client = new speech.SpeechClient();
 
-  const gcsUri = 'gs://podscriptaudio/wav.flac';
-  const encoding = 'FLAC';
-  const sampleRateHertz = 44100;
-  const languageCode = 'en-US';
+// fileController.googleSpeechToText = (req, res, next) => {
+// async function main(googleURL) {
+//   // Google Cloud API functionality
+//   // Imports the Google Cloud client library
+//   const speech = require('@google-cloud/speech');
 
-  const config = {
-    encoding,
-    sampleRateHertz,
-    languageCode,
-    audioChannelCount: 2,
-    enableSeparateRecognitionPerChannel: true,
-  };
+//   // Creates a client
+//   const client = new speech.SpeechClient();
 
-  const audio = {
-    uri: gcsUri,
-  };
+//   const gcsUri = googleURL;
+//   const encoding = 'FLAC';
+//   const sampleRateHertz = 44100;
+//   const languageCode = 'en-US';
 
-  const request = {
-    config,
-    audio,
-  };
+//   const config = {
+//     encoding,
+//     sampleRateHertz,
+//     languageCode,
+//     audioChannelCount: 2,
+//     enableSeparateRecognitionPerChannel: true,
+//   };
 
-  // Detects speech in the audio file. This creates a recognition job that you
-  // can wait for now, or get its result later.
-  const [operation] = await client.longRunningRecognize(request);
-  // Get a Promise representation of the final result of the job
-  const [response] = await operation.promise();
-  console.log(response);
-  const transcription = response.results.map(result => result.alternatives[0].transcript).join('\n');
-  console.log(`Transcription: ${transcription}`);
-}
-console.log(main().catch(console.error));
+//   const audio = {
+//     uri: gcsUri,
+//   };
+
+//   const request = {
+//     config,
+//     audio,
+//   };
+
+//   // Detects speech in the audio file. This creates a recognition job that you
+//   // can wait for now, or get its result later.
+//   const [operation] = await client.longRunningRecognize(request);
+//   // Get a Promise representation of the final result of the job
+//   const [response] = await operation.promise();
+//   console.log(response);
+//   const transcription = response.results.map(result => result.alternatives[0].transcript).join('\n');
+//   console.log(`Transcription: ${transcription}`);
+//   const filePath = '/Users/jacobbanks/Desktop/PodScript_MP3/podcasttranscription.txt';
+//   await fs.writeFile(filePath, transcription, (err) => {
+//     if (err) throw err;
+//     console.log('transcript saved')
+//   });
+// }
+
+// const writeTranscript = main('gs://podscriptaudio/shortPodcast.flac');
+// console.log(writeTranscript);
+
+// controller for writing the file
+// fileController.writeTranscript = (req, res, body) => {
+//   const transcript = main('gs://podscriptaudio/wav.flac');
+//   console.log(transcript);
+//   fs.writeFile('transcript.text', transcript, (err) => {
+//     if (err) throw err;
+//     console.log(transcript saved)
+//   })
+// }
+
 
 // async function main() {
 //   // imports google cloud client library

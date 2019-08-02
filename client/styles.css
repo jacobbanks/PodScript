@@ -1,3 +1,17 @@
+
+.podcast {
+  text-align: center;
+}
+h1 {
+  text-align: center;
+}
 .podcast-input {
-  width: 180px;
+  width: 240px;
+  text-align: center;
+  
+}
+
+.transcript {
+padding-top: 10px;
+text-align: center;
 }
